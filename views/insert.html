@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<style>
+	p.w{font-family:helvetica,arial;
+	          font-size:170.5%;
+	          font-weight:bold;
+	text-align:center;
+	}
+	ul {
+	list-style:none;
+	text-align:center;
+border-top:1px solid purple; border-bottom:1px solid purple; padding:10px ;
+
+}
+ul li {
+	display:inline;
+	text-transform:uppercase;
+					padding:10px; letter-spacing:10px;
+}
+ul li a { text-decoration:none; color:black; }
+ul li a:hover { text-decoration:underline; }
+p.w{font-family:helvetica,arial;
+					font-size:170.5%;
+					font-weight:bold;
+text-align:center;
+}
+	</style>
+</head>
+<body>
+    <p class="w">ADD SALE EVENTS</p>
+		<ul>
+			<li><a href="http://52.78.205.45:3000/mysql">BACK</a></li>
+
+		</ul>
+	<form method="POST">
+	<fieldset>
+		<legend>SALE EVENTS</legend>
+		<table>
+			<tr>
+				<td><label>BRAND NAME</label></td>
+				<td><!--<input type="text" name="brand_id"/>-->
+					<select name="brand_id">
+   						<option value="0" selected="selected">Innisfree</option>
+   						<option value="1">Nature Republic</option>
+   						<option value="2">the Saem</option>
+   						<option value="3">THE FACE SHOP</option>
+   						<option value="4">MISSHA</option>
+   						<option value="5">VDL</option>
+   						<option value="6">SKIN FOOD</option>
+   						<option value="7">ARITAUM</option>
+   						<option value="8">A'PIEU</option>
+   						<option value="9">ETUDE house</option>
+   						<option value="10">espoir</option>
+   						<option value="11">OLIVE YOUNG</option>
+   						<option value="12">IT'S SKIN</option>
+   						<option value="13">TONYMOLY</option>
+   						<option value="14">Holika Holika</option>
+					</select>
+
+				</td>
+
+
+			</tr>
+
+			<tr>
+				<td><label>SALE DATE</label></td>
+				<td><input type="date" name="sale_day1"> ~ <input type="date" name="sale_day2" ></td>
+			</tr>
+
+
+			<tr>
+				<td><label>SALE INFO</label></td>
+				<td>
+					<TEXTAREA NAME="sale_info" COLS=70 ROWS=4></TEXTAREA>
+				</td>
+			</tr>
+
+		</table>
+<input type="submit" value="SUBMIT"/>
+	</fieldset>
+	</form>
+
+	<script>
+	var session = new Object();
+
+	$(document).ready(function() {
+		$.get("./mainSale/session", function(data) {setSessionData(data)}, "json");
+	})
+
+	function setSessionData(data) {
+		console.log(data);
+		if(data.result == -1) {
+			alert('로그인이 필요합니다.')
+			window.location.href="./manager";
+		}
+	}
+
+	</script>
+</body>
+</html>

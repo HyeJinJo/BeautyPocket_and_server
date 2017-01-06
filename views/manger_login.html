@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    .chunk {
+
+    background:#ccf;
+    border:0.2em solid #99c;
+    border-top-left-radius:0.8em;
+    border-top-right-radius:0.8em;
+    display:block;
+    margin-bottom:2em;
+    overflow:hidden;
+    position:relative;
+left: 450px;
+top: 200px;
+	width: 400px;
+height:200px;
+}
+.chunk fieldset,
+.chunk legend {
+    border:none;
+    margin:0;
+    padding:0;
+}
+    .chunk .hd {
+        display:block;
+        padding:0.5em 0 0.3em;
+        width:100%; /* For IE8 */
+    }
+        .chunk .hd .text {
+            color:#003;
+            font-family:helvetica,arial;
+            font-size:138.5%;
+            font-weight:normal;
+            margin:0 0.5em;
+            white-space:normal;
+            display:block;zoom:1; /* For IE7 */
+        }
+    .chunk .bd {
+        background: #eef;
+        border-top:0.2em solid #99c;
+        padding:1em 0.5em;
+    }
+</style>
+    <meta charset="utf-8">
+    <title>beautypocket_manager</title>
+      <script src="http://code.jquery.com/jquery-latest.js"></script>
+  </head>
+  <body>
+    <section class="chunk">
+        <fieldset style="width:200; height:100;">
+            <legend class="hd">
+                <span class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEAUTY POCKET MANAGER</span>
+            </legend>
+            <div class="bd">
+                <ol class="fields">
+        &nbsp;&nbsp;
+    ID  : <input type="text" id = "id"><br>
+    P/W : <input type="password" value="" placeholder="패스워드" id="pw" onkeydown='javascript:onEnterSubmit()'><br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="button" value="로그인" id="btn_login" />
+</ol>
+
+<script>
+function onEnterSubmit(){
+              var keyCode = window.event.keyCode;
+              if(keyCode==13) $('#btn_login').trigger('click');
+          }
+
+
+  $('#btn_login').click(function(){
+    var id =  document.getElementById('id').value;
+    var pw = document.getElementById("pw").value;
+    console.log("login");
+$.ajax({
+   url:'./manager/login',
+   type:'post',
+   dataType:'json',
+   data:{
+     id : id,
+     passwd: pw
+    },
+   success:function(data){
+       var result = data.result;
+       if(result == 1){
+         window.location.href="./mainSale";
+       }else {
+         console.log("비밀번호가 틀렸습니다")
+       }
+   }, error:function(e){
+     console.log(e.responseText);
+     if(e.responseText == "Unauthorized")
+          window.alert("비밀번호가 틀렸습니다")
+      }
+})
+  })
+</script>
+  </body>
+</html>

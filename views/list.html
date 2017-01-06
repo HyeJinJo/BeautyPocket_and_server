@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<style>
+	ul {
+	list-style:none;
+	text-align:center;
+border-top:1px solid purple; border-bottom:1px solid purple; padding:10px ;
+
+}
+ul li {
+	display:inline;
+	text-transform:uppercase;
+					padding:10px; letter-spacing:10px;
+}
+ul li a { text-decoration:none; color:black; }
+ul li a:hover { text-decoration:underline; }
+p.w{font-family:helvetica,arial;
+          font-size:170.5%;
+          font-weight:bold;
+text-align:center;
+}
+	</style>
+</head>
+<body>
+
+    <p class="w">SALE LISTS</p>
+	<ul>
+		<li><a href="http://52.78.205.45:3000/mainSale">UPDATE</a></li>
+		<li><a href="http://52.78.205.45:3000/mysql">SALE-LISTS</a></li>
+<li>	<a href="http://52.78.205.45:3000/mysql/insert">Add Sale Event</a></li>
+	</ul>
+
+
+
+	<table align="center" width="85%" border="1" cellpadding=1 cellspacing=0 style="margin:10px;">
+		<tr>
+		<!--	<th>delete</th>
+			<th>edit</th>
+			<th>id</th>
+			<th>name</th>
+			<th>model number</th>
+			<th>series</th> -->
+
+		<!--	<th>delete</th>
+			<th>edit</th>
+			<th>pro_id</th>
+			<th>pro_name</th>
+			<th>pro_price</th>
+			<th>pro_image</th>-->
+
+
+			<th width="130">브랜드 이름</th>
+			<th width="200">세일 기간</th>
+			<th>세일 정보</th>
+			<th width="60">삭제</th>
+
+
+		</tr>
+
+		<% data.forEach(function(item, index){ %>
+		<tr>
+		<!--	<td><a href="/delete/<%= item.id%>">DELETE</a></td>
+			<td><a href="/edit/<%= item.id%>">EDIT</a></td>
+			<td><%= item.id%></td>
+			<td><%= item.name%></td>
+			<td><%= item.modelnumber%></td>
+			<td><%= item.series%></td> -->
+
+
+		<!--	<td><a href="/delete/<%= item.pro_id%>">DELETE</a></td>
+			<td><a href="/edit/<%= item.pro_id%>">EDIT</a></td>
+			<td><%= item.pro_id%></td>
+			<td><%= item.pro_name%></td>
+			<td><%= item.pro_price%></td>
+			<td><%= item.pro_image%></td>-->
+
+			<td align="center">
+				<%  var value=item.brand_id;
+					var brand_name;
+					if(value==0)
+						brand_name='Innisfree';
+
+					else if(value==1)
+						brand_name='Nature Republic';
+
+					else if(value==2)
+						brand_name='the Saem';
+
+					else if(value==3)
+						brand_name='THE FACE SHOP';
+
+					else if(value==4)
+						brand_name='MISSHA';
+
+					else if(value==5)
+						brand_name='VDL';
+
+					else if(value==6)
+						brand_name='SKIN FOOD';
+
+					else if(value==7)
+						brand_name='ARITAUM';
+
+					else if(value==8)
+						brand_name='A\'PIEU';
+
+					else if(value==9)
+						brand_name='ETUDE house';
+
+					else if(value==10)
+						brand_name='espoir';
+
+					else if(value==11)
+						brand_name='OLIVE YOUNG';
+
+					else if(value==12)
+						brand_name='IT\'S SKIN';
+
+					else if(value==13)
+						brand_name='TONYMOLY';
+
+					else if(value==14)
+						brand_name='Holika Holika';
+					else
+						brand_name='other';
+				%>
+				<%=brand_name%>
+			</td>
+			<td align="center"><%= item.sale_day %></td>
+			<td align="center" height="100px"><%= item.sale_info %></td>
+			<td align="center"><a href="http://52.78.205.45:3000/mysql/delete/<%= item.sale_id%>">DELETE</a></td>
+
+		</tr>
+
+		<% }); %>
+	</table>
+
+	<script>
+	var session = new Object();
+
+	$(document).ready(function() {
+	  $.get("./mainSale/session", function(data) {setSessionData(data)}, "json");
+	})
+
+	function setSessionData(data) {
+	  console.log(data);
+	  if(data.result == -1) {
+	    alert('로그인이 필요합니다.')
+	    window.location.href="./manager";
+	  }
+	}
+
+	</script>
+
+</body>
+</html>

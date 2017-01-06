@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>브랜드 세일정보 업데이트</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+    ul {
+    list-style:none;
+    text-align:center;
+  border-top:1px solid purple; border-bottom:1px solid purple; padding:10px ;
+
+}
+ul li {
+    display:inline;
+    text-transform:uppercase;
+            padding:10px; letter-spacing:10px;
+}
+ul li a { text-decoration:none; color:black; }
+ul li a:hover { text-decoration:underline; }
+bn {font-family:helvetica,arial;
+          font-size:170.5%;
+          font-weight:bold;
+}
+p.w{font-family:helvetica,arial;
+          font-size:170.5%;
+          font-weight:bold;
+text-align:center;
+}
+    td{
+      border: 1px gray solid;
+    }
+    </style>
+  </head>
+  <body>
+    <p class="w">SALE BRAND INFO UPDATE</p>
+<ul>
+  <li><a href="http://52.78.205.45:3000/mainSale">UPDATE</a></li>
+  <li><a href="http://52.78.205.45:3000/mysql">SALE-LISTS</a></li>
+
+</ul>
+
+  <div style="margin-bottom:20px;">
+<div style="margin-bottom:10px;">
+    <span id="bn" style="margin-right:5px;">BRAND NAME</span>
+    <select name="brand_id" id = "brand_id">
+    <option value="0">이니스프리</option>
+    <option value="1">네이처리퍼블릭</option>
+    <option value="2">더샘</option>
+    <option value="3">더페이스샵</option>
+    <option value="4">미샤</option>
+    <option value="5">브이디엘</option>
+    <option value="6">스킨푸드</option>
+    <option value="7">아리따움</option>
+    <option value="8">어퓨</option>
+    <option value="9">에뛰드하우스</option>
+    <option value="10">에스쁘아</option>
+    <option value="11">올리브영</option>
+    <option value="12">잇츠스킨</option>
+    <option value="13">토니모리</option>
+    <option value="14">홀리카홀리카</option>
+</select>
+</div>
+<div style="margin-bottom:10px;">
+    <span style="margin-right:5px;">SALE DATE</span>
+    <input type="date" name="세일시작" id="startDate" value=""> ~ <input type="date" name="세일끝" id="endDate" value="">
+  </div>
+
+  <div style="margin-bottom:10px;">
+  <span style="margin-right:5px;float:left;">SALE TITLE</span>
+  <input type="text" id="sale_title">
+</div>
+
+    <div style="margin-bottom:10px;">
+    <span style="margin-right:5px;float:left;">SALE INFO</span>
+    <textarea id="sale_info" style="height:100px;width:750px; resize:none"></textarea>
+  </div>
+<div style="clear:left;">
+<span>
+    IMAGE UPLOAD :</span>
+    <input type="file" name="FileName" id="image_file">
+    <input type="button" value="전송" id="btn_add" /></br>
+  </div>
+
+    </div>
+
+    <table width="95%" cellpadding=1 cellspacing=0 style="margin:10px;">
+    <tr  align="center" style="font-weight:bold">
+        <td width=150>BRAND NAME</td>
+        <td>DATE</td>
+        <td>TITLE</td>
+        <td>INFO</td>
+        <td>IMAGE</td>
+        <td>DELETE</td>
+    </tr>
+    <% data.forEach(function (item, index) { %>
+    <tr  align="center">
+        <td width=150><%=item.brand_name%></td>
+        <td width=250><%=item.sale_day%></td>
+        <td width=200><%=item.sale_title%></td>
+        <td><%=item.sale_info%></td>
+        <td width=500><img src ="<%=item.sale_image%>"  height=100 width="auto"></td>
+        <td width=70><input type="button" value="삭제" class="btn_delete" ></td>
+        <input type=hidden name="mainsale_id" class="mainsale_id" value="<%=item.mainsale_id%>">
+    </tr>
+    <% }); %>
+</table>
+
+
+<script>
+
+var session = new Object();
+
+$(document).ready(function() {
+  $.get("./mainSale/session", function(data) {setSessionData(data)}, "json");
+})
+
+function setSessionData(data) {
+  console.log(data);
+  if(data.result == -1) {
+    alert('로그인이 필요합니다.')
+    window.location.href="./manager";
+  }
+}
+
+$(document).ready(function() {
+  document.getElementById("startDate").valueAsDate = new Date();
+  document.getElementById("endDate").valueAsDate = new Date();
+
+    $('#btn_add').click(function() {
+      console.log("click");
+      var brand_id = document.getElementById('brand_id');
+      var sale_title = document.getElementById('sale_title');
+      var startDate = document.getElementById('startDate');
+      var endDate = document.getElementById('endDate');
+      var image = document.getElementById('image_file');
+      var sale_info = document.getElementById('sale_info');
+      var sale_image = image.files[0];
+      var sale_day = startDate.value +" ~ " +endDate.value
+      if(!sale_image){
+        window.alert('사진을 입력해주세요')
+      }else if(!sale_info.value){
+        window.alert('정보를 입력해주세요')
+      }else {
+        var data = new FormData();
+        data.append("brand_id", brand_id.value);
+        data.append("sale_day", sale_day);
+        data.append("sale_info", sale_info.value);
+        data.append("sale_image", sale_image);
+        data.append("sale_title", sale_title.value);
+
+        $.ajax({
+            type: "POST",
+            url: 'http://52.78.205.45:3000/mainSale/add',
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            dataType: "json",
+            success: function(data) {
+                if (data.result == false) {
+                    console.log("에러발생")
+                } else
+                    window.alert('등록되었습니다')
+                    window.location.href="http://52.78.205.45:3000/mainSale";
+            }
+        });
+      }
+    });
+
+    $('.btn_delete').click(function() {
+
+        $.ajax({
+            url: 'http://52.78.205.45:3000/mainSale/delete',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                mainsale_id: $(this).parent().parent().find('.mainsale_id').val(),
+            },
+            success: function(result) {
+                if (result.result == true) {
+                    alert('서버의 내용이 수정되었습니다.');
+                    window.location.href="http://52.78.205.45:3000/mainSale";
+                } else {
+                    alert('실패');
+                }
+
+            }
+        });
+    });
+
+  });
+</script>
+  </body>
+</html>
